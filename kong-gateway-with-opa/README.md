@@ -23,7 +23,7 @@ kubectl create secret generic kong-enterprise-license -n kong --from-file=./lice
 
 3. Create secret with superuser password for enterprise Kong
 ```
-kubectl create secret generic kong-enterprise-superuser-password -n kong --from-literal=password=Digital@1234
+kubectl create secret generic kong-enterprise-superuser-password -n kong --from-literal=password=DummyPass@1234
 ```
 
 4. Create secret with GUI and portal session configuration
@@ -93,4 +93,5 @@ curl -X GET http://$HOST:$PROXY_PORT/foo
 
 You will get 200 HTTP response, with header information in response body.
 
-Edit the policy `example.rego`, change `input.path == "/foo"` to `input.path == "/bar"` in `allow` rule, this will force `allow` rule to evaluate to `false`. Apply OPA policy again and make same request to kong proxy, you will get 403 response and response body as `"message":"Access Forbidden"` from gateway as OPA has rejected the request now. 
+Edit the policy `example.rego`, change `input.path == "/foo"` to `input.path == "/bar"` in `allow` rule, this will force `allow` rule to evaluate to `false`. 
+Apply OPA policy again and make same request to kong proxy, you will get 403 response and response body as `"message":"Access Forbidden"` from gateway as OPA has rejected the request now. 
