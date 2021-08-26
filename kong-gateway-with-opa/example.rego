@@ -3,5 +3,6 @@ package example
 default allow = false
 
 allow {
- true
+ input.method == "GET"
+ input.path == "/foo"
 }

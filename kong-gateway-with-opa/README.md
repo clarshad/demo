@@ -91,6 +91,6 @@ Make request to Kong Gateway - proxy service at path `/foo` as set up ingress re
 curl -X GET http://$HOST:$PROXY_PORT/foo
 ```
 
-You will get 403 response from gateway because OPA has rejected the request. 
+You will get 200 HTTP response, with header information in response body.
 
-Edit the policy `example.rego`, change the `allow` to be `true` and re apply the policy. Verify this time the traffic to be authorized by OPA.
+Edit the policy `example.rego`, change `input.path == "/foo"` to `input.path == "/bar"` in `allow` rule, this will force `allow` rule to evaluate to `false`. Apply OPA policy again and make same request to kong proxy, you will get 403 response and response body as `"message":"Access Forbidden"` from gateway as OPA has rejected the request now. 
