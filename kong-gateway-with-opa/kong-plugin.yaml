@@ -1,0 +1,12 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: opa-example
+config:
+  server:
+    protocol: http 
+    host: opa
+    port: 8181
+  policy:
+    decision: example/allow
+plugin: opa

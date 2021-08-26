@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: opa
+  name: opa
+spec:
+  containers:
+  - image: openpolicyagent/opa:0.32.0-dev
+    name: opa
+    args:
+    - "run"
+    - "--server"
+    ports:
+    - containerPort: 8181
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
