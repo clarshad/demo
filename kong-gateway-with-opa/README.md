@@ -79,6 +79,7 @@ Set below environment variables to access OPA and Kong Proxy
 export HOST=$(kubectl get nodes --namespace kong -o jsonpath='{.items[0].status.addresses[0].address}')
 export PROXY_PORT=$(kubectl get svc --namespace kong my-kong-kong-proxy -o jsonpath='{.spec.ports[0].nodePort}')
 export OPA_PORT=$(kubectl get svc --namespace kong opa -o jsonpath='{.spec.ports[0].nodePort}')
+```
 
 Apply OPA policy, written in rego to OPA and server
 ```
