@@ -54,7 +54,7 @@ Follow below steps to setup Kong Gateway authorization with OPA
 1. Deploy opa pod in kong namespace and create a NodePort service for it
 ```
 kubectl apply -f opa.yaml -n kong
-kubectl expose pod opa --port=8181 --type=NodePort
+kubectl expose pod opa -n kong --port=8181 --type=NodePort
 ```
 
 2. Configure custom KongPlugin resource for OPA
@@ -74,14 +74,20 @@ kubectl apply -f ingress.yaml
 
 #### Testing
 
+Set below environment variables to access OPA and Kong Proxy
+```
+export HOST=$(kubectl get nodes --namespace kong -o jsonpath='{.items[0].status.addresses[0].address}')
+export PROXY_PORT=$(kubectl get svc --namespace kong my-kong-kong-proxy -o jsonpath='{.spec.ports[0].nodePort}')
+export OPA_PORT=$(kubectl get svc --namespace kong opa -o jsonpath='{.spec.ports[0].nodePort}')
+
 Apply OPA policy, written in rego to OPA and server
 ```
-curl -XPUT http://$(minikube ip):<NodePort that maps to 8181 port of opa service>/v1/policies/example --data-binary @example.rego
+curl -XPUT http://$(HOST):$(OPA_PORT)/v1/policies/example --data-binary @example.rego
 ```
 
 Make request to Kong Gateway - proxy service at path `/foo` as set up ingress resourse (step 4 in setup section)
 ```
-curl -X GET http://$(minikube ip):<NodePort that maps to 8000 port of kong proxy service>/foo
+curl -X GET http://$(HOST):$(PROXY_PORT)/foo
 ```
 
 You will get 403 response from gateway because OPA has rejected the request. 
