@@ -83,12 +83,12 @@ export OPA_PORT=$(kubectl get svc --namespace kong opa -o jsonpath='{.spec.ports
 
 Apply OPA policy, written in rego to OPA and server
 ```
-curl -XPUT http://$(HOST):$(OPA_PORT)/v1/policies/example --data-binary @example.rego
+curl -XPUT http://$HOST:$OPA_PORT/v1/policies/example --data-binary @example.rego
 ```
 
 Make request to Kong Gateway - proxy service at path `/foo` as set up ingress resourse (step 4 in setup section)
 ```
-curl -X GET http://$(HOST):$(PROXY_PORT)/foo
+curl -X GET http://$HOST:$PROXY_PORT/foo
 ```
 
 You will get 403 response from gateway because OPA has rejected the request. 
